@@ -2,8 +2,10 @@ package main
 
 import (
 	"flag"
+	"math/rand"
 	"time"
 
+	"github.com/anilsenay/go-basic-pubsub/producer/models"
 	"github.com/anilsenay/go-basic-pubsub/producer/services"
 )
 
@@ -23,7 +25,15 @@ func main() {
 	for {
 		for _, producer := range producers {
 			go func(c *services.OrderService) {
-				c.CreateOrder()
+				randomOrderId := rand.Intn(100000)
+				c.CreateOrder(models.Order{
+					OrderID:    randomOrderId,
+					CustomerID: 1,
+					ItemID:     1,
+					Quantity:   1,
+					Price:      1.0,
+					Total:      1.0,
+				})
 			}(producer)
 		}
 		time.Sleep(time.Duration(*delay) * time.Millisecond)
