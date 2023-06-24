@@ -1,0 +1,1 @@
+go run ./pubsub/main.go 

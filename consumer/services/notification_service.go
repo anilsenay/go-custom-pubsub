@@ -21,7 +21,7 @@ func NewNotificationService(pubsub_url, topic string) *NotificationService {
 }
 
 func (s *NotificationService) SendNotification(order models.Order) error {
-	fmt.Printf("Sending notification to customer: %d\n", order.CustomerID)
+	fmt.Printf("Sending notification to customer: %d\n for order: %d", order.CustomerID, order.OrderID)
 	return nil
 }
 
