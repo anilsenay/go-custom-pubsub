@@ -2,6 +2,7 @@ package main
 
 import (
 	"flag"
+	"math/rand"
 	"time"
 
 	"github.com/anilsenay/go-basic-pubsub/consumer/services"
@@ -25,7 +26,8 @@ func main() {
 			go func(c *services.NotificationService) {
 				c.Consume()
 			}(consumer)
+			time.Sleep(time.Duration(rand.Intn(300)) * time.Millisecond)
 		}
-		time.Sleep(time.Duration(*delay) * time.Millisecond)
+		time.Sleep(time.Duration(rand.Intn(*delay)) * time.Millisecond)
 	}
 }

@@ -35,7 +35,8 @@ func main() {
 					Total:      1.0,
 				})
 			}(producer)
+			time.Sleep(time.Duration(rand.Intn(300)) * time.Millisecond)
 		}
-		time.Sleep(time.Duration(*delay) * time.Millisecond)
+		time.Sleep(time.Duration(rand.Intn(*delay)) * time.Millisecond)
 	}
 }
