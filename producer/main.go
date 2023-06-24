@@ -1,0 +1,31 @@
+package main
+
+import (
+	"flag"
+	"time"
+
+	"github.com/anilsenay/go-basic-pubsub/producer/services"
+)
+
+var pubsub_url = flag.String("h", "http://localhost:8080/produce", "URL to send messages to")
+var topic = flag.String("t", "ORDER", "Topic to send messages to")
+var producer_count = flag.Int("c", 5, "Number of producers to spawn")
+var delay = flag.Int("d", 1000, "Delay between messages in milliseconds")
+
+func main() {
+	flag.Parse()
+
+	producers := make([]*services.OrderService, *producer_count)
+	for i := 0; i < *producer_count; i++ {
+		producers[i] = services.NewOrderService(*pubsub_url, *topic)
+	}
+
+	for {
+		for _, producer := range producers {
+			go func(c *services.OrderService) {
+				c.CreateOrder()
+			}(producer)
+		}
+		time.Sleep(time.Duration(*delay) * time.Millisecond)
+	}
+}
