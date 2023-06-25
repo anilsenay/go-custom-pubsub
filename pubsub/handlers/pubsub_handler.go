@@ -11,7 +11,8 @@ import (
 
 type PubSub interface {
 	Enqueue(topic, msg string) error
-	Dequeue(topic string) (string, error)
+	Dequeue(topic, subscriber string) (string, error)
+	Subscribe(topic, subscriber string) error
 }
 
 type PubSubHandler struct {
@@ -29,7 +30,22 @@ func NewPubSubHandler(port string, pubsub PubSub) *PubSubHandler {
 	}
 	mux.HandleFunc("/produce", h.HandleProduce())
 	mux.HandleFunc("/consume", h.HandleConsume())
+	mux.HandleFunc("/subscribe", h.HandleSubscribe())
 	return &h
+}
+
+func (h *PubSubHandler) HandleSubscribe() func(w http.ResponseWriter, r *http.Request) {
+	return func(w http.ResponseWriter, r *http.Request) {
+		topic := r.URL.Query().Get("topic")
+		subscriber := r.URL.Query().Get("subscriber")
+		err := h.pubSub.Subscribe(topic, subscriber)
+		if err != nil {
+			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
+		}
+		w.WriteHeader(http.StatusOK)
+		w.Write([]byte(fmt.Sprintf("Subscribed to %s", topic)))
+	}
 }
 
 func (h *PubSubHandler) HandleProduce() func(w http.ResponseWriter, r *http.Request) {
@@ -38,23 +54,28 @@ func (h *PubSubHandler) HandleProduce() func(w http.ResponseWriter, r *http.Requ
 		err := json.NewDecoder(r.Body).Decode(&msg)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
 		}
 
 		b, err := json.Marshal(msg.Body)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
 		}
 
 		h.pubSub.Enqueue(msg.Topic, string(b))
+		w.WriteHeader(http.StatusOK)
 	}
 }
 
 func (h *PubSubHandler) HandleConsume() func(w http.ResponseWriter, r *http.Request) {
 	return func(w http.ResponseWriter, r *http.Request) {
 		topic := r.URL.Query().Get("topic")
-		message, err := h.pubSub.Dequeue(topic)
+		subscriber := r.URL.Query().Get("subscriber")
+		message, err := h.pubSub.Dequeue(topic, subscriber)
 		if err != nil {
 			w.WriteHeader(http.StatusInternalServerError)
+			w.Write([]byte(err.Error()))
 		}
 		w.WriteHeader(http.StatusOK)
 		w.Write([]byte(message))

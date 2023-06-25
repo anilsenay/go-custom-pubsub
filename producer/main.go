@@ -28,7 +28,7 @@ func main() {
 				randomOrderId := rand.Intn(100000)
 				c.CreateOrder(models.Order{
 					OrderID:    randomOrderId,
-					CustomerID: 1,
+					CustomerID: 1234,
 					ItemID:     1,
 					Quantity:   1,
 					Price:      1.0,

@@ -18,9 +18,16 @@ func TestNotificationService_Consume(t *testing.T) {
 		json.NewEncoder(w).Encode(order)
 	}))
 
+	c := &PubSubClient{
+		pubsub_url:     server.URL,
+		topic:          "TEST_TOPIC",
+		subscriptionID: "TEST_SUBSCRIPTION",
+	}
+
+	c.Subscribe()
+
 	s := &NotificationService{
-		pubsub_url: server.URL,
-		topic:      "TEST_TOPIC",
+		client: c,
 	}
 
 	order, err := s.Consume()
@@ -30,5 +37,9 @@ func TestNotificationService_Consume(t *testing.T) {
 
 	if order.OrderID != 123 {
 		t.Errorf("Expected order id to be 123, got %d", order.OrderID)
+	}
+
+	if order.CustomerID != 1234 {
+		t.Errorf("Expected customer id to be 1234, got %d", order.CustomerID)
 	}
 }

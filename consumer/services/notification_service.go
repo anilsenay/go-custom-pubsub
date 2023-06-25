@@ -3,42 +3,46 @@ package services
 import (
 	"encoding/json"
 	"fmt"
-	"net/http"
 
 	"github.com/anilsenay/go-basic-pubsub/consumer/models"
 )
 
-type NotificationService struct {
-	pubsub_url string
-	topic      string
+type pubSubClient interface {
+	Consume() ([]byte, error)
+	Subscribe() error
+	IsSubscribed() bool
 }
 
-func NewNotificationService(pubsub_url, topic string) *NotificationService {
+type NotificationService struct {
+	client pubSubClient
+}
+
+func NewNotificationService(client pubSubClient) *NotificationService {
 	return &NotificationService{
-		pubsub_url: pubsub_url,
-		topic:      topic,
+		client: client,
 	}
 }
 
 func (s *NotificationService) SendNotification(order models.Order) error {
-	fmt.Printf("Sending notification to customer: %d\n for order: %d", order.CustomerID, order.OrderID)
+	fmt.Printf("Sending notification to customer: %d for order: %d \n", order.CustomerID, order.OrderID)
 	return nil
 }
 
 func (s *NotificationService) Consume() (*models.Order, error) {
-	resp, err := http.DefaultClient.Get(s.pubsub_url + "?topic=" + s.topic)
-	if err != nil {
-		return nil, err
+	if !s.client.IsSubscribed() {
+		return nil, fmt.Errorf("consumer is not subscribed to pubsub")
 	}
-	defer resp.Body.Close()
 
-	order := models.Order{}
-	err = json.NewDecoder(resp.Body).Decode(&order)
+	resp, err := s.client.Consume()
 	if err != nil {
 		return nil, err
 	}
 
-	s.SendNotification(order)
+	order := models.Order{}
+	err = json.Unmarshal(resp, &order)
+	if err != nil {
+		return nil, err
+	}
 
 	return &order, nil
 }
