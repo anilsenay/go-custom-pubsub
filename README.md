@@ -53,7 +53,7 @@ go run ./producers/shipping/main.go -d 5000
 
 ## Demo video:
 
--- TODO --
+https://github.com/anilsenay/go-custom-pubsub/assets/1047345/b0edc53a-877a-4823-b1f7-5b396d3877e9
 
 ## What more can be done?
 
