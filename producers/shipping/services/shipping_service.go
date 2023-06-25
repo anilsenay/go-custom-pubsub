@@ -6,25 +6,25 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/anilsenay/go-basic-pubsub/producer/models"
+	"github.com/anilsenay/go-basic-pubsub/producers/shipping/models"
 )
 
-type OrderService struct {
+type ShippingService struct {
 	pubsub_url string
 	topic      string
 }
 
-func NewOrderService(pubsub_url, topic string) *OrderService {
-	return &OrderService{
+func NewShippingService(pubsub_url, topic string) *ShippingService {
+	return &ShippingService{
 		pubsub_url: pubsub_url,
 		topic:      topic,
 	}
 }
 
-func (s *OrderService) CreateOrder(order models.Order) error {
+func (s *ShippingService) UpdateStatus(status models.ShippingStatus) error {
 	body := models.Message{
 		Topic: s.topic,
-		Body:  order,
+		Body:  status,
 	}
 
 	j, err := json.Marshal(body)
@@ -32,7 +32,7 @@ func (s *OrderService) CreateOrder(order models.Order) error {
 		return err
 	}
 
-	fmt.Printf("Sending message to pubsub with order id: %d\n", order.OrderID)
+	fmt.Printf("Sending message to pubsub with order id: %d\n", status.OrderID)
 	resp, err := http.DefaultClient.Post(s.pubsub_url, "application/json", bytes.NewBuffer(j))
 	if err != nil {
 		fmt.Println(err)

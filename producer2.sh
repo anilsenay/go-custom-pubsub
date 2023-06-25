@@ -1,0 +1,1 @@
+go run ./producers/shipping/main.go -d 5000

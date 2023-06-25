@@ -38,11 +38,14 @@ func (m *PubSubManager) Enqueue(topic, msg string) error {
 	if _, ok := m.topics[topic]; !ok {
 		return fmt.Errorf("topic %s does not exist", topic)
 	}
-
-	for _, subscriber := range m.topics[topic] {
-		subscriber <- msg
+	if len(m.topics[topic]) == 0 {
+		return fmt.Errorf("no subscribers for topic %s", topic)
 	}
-	fmt.Printf("%s message: %s\n", green("ENQUEUED"), msg)
+
+	for s, subscriber := range m.topics[topic] {
+		subscriber <- msg
+		fmt.Printf("%s to %s/%s <- message: %s\n", green("ENQUEUED"), topic, s, msg)
+	}
 	return nil
 }
 

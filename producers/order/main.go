@@ -5,8 +5,8 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/anilsenay/go-basic-pubsub/producer/models"
-	"github.com/anilsenay/go-basic-pubsub/producer/services"
+	"github.com/anilsenay/go-basic-pubsub/producers/order/models"
+	"github.com/anilsenay/go-basic-pubsub/producers/order/services"
 )
 
 var pubsub_url = flag.String("h", "http://localhost:8080/produce", "URL to send messages to")

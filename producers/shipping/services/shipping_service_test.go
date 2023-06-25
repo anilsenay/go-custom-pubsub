@@ -7,10 +7,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/anilsenay/go-basic-pubsub/producer/models"
+	"github.com/anilsenay/go-basic-pubsub/producers/shipping/models"
 )
 
-func TestOrderService_CreateOrder(t *testing.T) {
+func TestShippingService(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		body := models.Message{}
 		err := json.NewDecoder(r.Body).Decode(&body)
@@ -29,17 +29,18 @@ func TestOrderService_CreateOrder(t *testing.T) {
 		}
 	}))
 
-	s := &OrderService{
+	s := &ShippingService{
 		pubsub_url: server.URL,
 		topic:      "TEST_TOPIC",
 	}
 
-	order := models.Order{
+	status := models.ShippingStatus{
 		OrderID:    123,
 		CustomerID: 1234,
+		Status:     "shipped",
 	}
 
-	err := s.CreateOrder(order)
+	err := s.UpdateStatus(status)
 	if err != nil {
 		t.Error(err)
 	}
