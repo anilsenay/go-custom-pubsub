@@ -1,4 +1,4 @@
-module github.com/anilsenay/go-basic-pubsub
+module github.com/anilsenay/go-custom-pubsub
 
 go 1.19
 

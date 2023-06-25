@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/anilsenay/go-basic-pubsub/consumers/shipping/models"
+	"github.com/anilsenay/go-custom-pubsub/consumers/shipping/models"
 )
 
 type pubSubClient interface {

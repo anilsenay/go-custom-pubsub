@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/anilsenay/go-basic-pubsub/pubsub/models"
+	"github.com/anilsenay/go-custom-pubsub/pubsub/models"
 )
 
 type PubSub interface {

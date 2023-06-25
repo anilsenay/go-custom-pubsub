@@ -4,7 +4,7 @@ import (
 	"encoding/json"
 	"fmt"
 
-	"github.com/anilsenay/go-basic-pubsub/consumers/notification/models"
+	"github.com/anilsenay/go-custom-pubsub/consumers/notification/models"
 )
 
 type pubSubClient interface {

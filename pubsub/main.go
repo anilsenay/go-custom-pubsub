@@ -3,8 +3,8 @@ package main
 import (
 	"flag"
 
-	"github.com/anilsenay/go-basic-pubsub/pubsub/handlers"
-	"github.com/anilsenay/go-basic-pubsub/pubsub/pubsub"
+	"github.com/anilsenay/go-custom-pubsub/pubsub/handlers"
+	"github.com/anilsenay/go-custom-pubsub/pubsub/pubsub"
 )
 
 var topics = []string{"ORDER", "SHIPMENT", "INVOICE"}

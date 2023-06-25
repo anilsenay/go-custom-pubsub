@@ -6,8 +6,8 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/anilsenay/go-basic-pubsub/consumers/notification/models"
-	"github.com/anilsenay/go-basic-pubsub/consumers/notification/services"
+	"github.com/anilsenay/go-custom-pubsub/consumers/notification/models"
+	"github.com/anilsenay/go-custom-pubsub/consumers/notification/services"
 )
 
 var defaultTopics = []string{"ORDER", "SHIPMENT"}

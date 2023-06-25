@@ -8,8 +8,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/anilsenay/go-basic-pubsub/pubsub/models"
-	"github.com/anilsenay/go-basic-pubsub/pubsub/pubsub"
+	"github.com/anilsenay/go-custom-pubsub/pubsub/models"
+	"github.com/anilsenay/go-custom-pubsub/pubsub/pubsub"
 )
 
 type MessageBody struct {

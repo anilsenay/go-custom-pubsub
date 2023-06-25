@@ -6,7 +6,7 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/anilsenay/go-basic-pubsub/consumers/notification/models"
+	"github.com/anilsenay/go-custom-pubsub/consumers/notification/models"
 )
 
 func TestNotificationService_Consume(t *testing.T) {

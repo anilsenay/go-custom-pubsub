@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/anilsenay/go-basic-pubsub/producers/order/models"
+	"github.com/anilsenay/go-custom-pubsub/producers/order/models"
 )
 
 type OrderService struct {

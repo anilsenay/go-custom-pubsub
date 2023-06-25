@@ -6,7 +6,7 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/anilsenay/go-basic-pubsub/producers/shipping/models"
+	"github.com/anilsenay/go-custom-pubsub/producers/shipping/models"
 )
 
 type ShippingService struct {
