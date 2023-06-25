@@ -30,16 +30,8 @@ func TestNotificationService_Consume(t *testing.T) {
 		client: c,
 	}
 
-	order, err := s.Consume()
+	err := s.Consume()
 	if err != nil {
 		t.Error(err)
-	}
-
-	if order.OrderID != 123 {
-		t.Errorf("Expected order id to be 123, got %d", order.OrderID)
-	}
-
-	if order.CustomerID != 1234 {
-		t.Errorf("Expected customer id to be 1234, got %d", order.CustomerID)
 	}
 }

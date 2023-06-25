@@ -28,21 +28,26 @@ func (s *NotificationService) SendNotification(order models.Order) error {
 	return nil
 }
 
-func (s *NotificationService) Consume() (*models.Order, error) {
+func (s *NotificationService) Consume() error {
 	if !s.client.IsSubscribed() {
-		return nil, fmt.Errorf("consumer is not subscribed to pubsub")
+		return fmt.Errorf("consumer is not subscribed to pubsub")
 	}
 
 	resp, err := s.client.Consume()
 	if err != nil {
-		return nil, err
+		return err
 	}
 
 	order := models.Order{}
 	err = json.Unmarshal(resp, &order)
 	if err != nil {
-		return nil, err
+		return err
 	}
 
-	return &order, nil
+	err = s.SendNotification(order)
+	if err != nil {
+		return err
+	}
+
+	return nil
 }

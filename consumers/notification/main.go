@@ -6,40 +6,47 @@ import (
 	"math/rand"
 	"time"
 
+	"github.com/anilsenay/go-basic-pubsub/consumers/notification/models"
 	"github.com/anilsenay/go-basic-pubsub/consumers/notification/services"
 )
 
+var defaultTopics = []string{"ORDER", "SHIPMENT"}
+var topics models.ArrayFlags
 var pubsub_url = flag.String("h", "http://localhost:8080", "URL to consume messages from")
-var topic = flag.String("t", "ORDER", "Topic to consume messages from")
-var consumer_count = flag.Int("c", 5, "Number of consumers to spawn")
+var consumer_count = flag.Int("c", 10, "Number of consumers to spawn")
 var delay = flag.Int("d", 5000, "Delay between messages in milliseconds")
 
+type Consumer interface {
+	Consume() error
+}
+
 func main() {
+	flag.Var(&topics, "t", "Topic to consume messages from")
 	flag.Parse()
 
-	pubSubClient := services.NewPubSubClient(*pubsub_url, *topic, "notification-consumer")
-	err := pubSubClient.Subscribe()
-	if err != nil {
-		fmt.Printf("error while subscribing topic: %v", err)
-		return
+	if len(topics) == 0 {
+		topics = append(topics, defaultTopics...)
 	}
 
-	consumers := make([]*services.NotificationService, *consumer_count)
-	for i := 0; i < *consumer_count; i++ {
-		consumers[i] = services.NewNotificationService(pubSubClient)
+	consumers := make([]Consumer, *consumer_count)
+	for _, topic := range topics {
+		pubSubClient := services.NewPubSubClient(*pubsub_url, topic, "notification-consumer")
+		err := pubSubClient.Subscribe()
+		if err != nil {
+			fmt.Printf("error while subscribing topic: %v", err)
+			return
+		}
+		for i := 0; i < *consumer_count; i++ {
+			consumers[i] = services.NewNotificationService(pubSubClient)
+		}
 	}
 
 	for {
 		for _, consumer := range consumers {
-			go func(c *services.NotificationService) {
-				order, err := c.Consume()
+			go func(c Consumer) {
+				err := c.Consume()
 				if err != nil {
 					fmt.Printf("error while consuming message: %v", err)
-					return
-				}
-				err = c.SendNotification(*order)
-				if err != nil {
-					fmt.Printf("error while sending notification: %v", err)
 					return
 				}
 			}(consumer)
