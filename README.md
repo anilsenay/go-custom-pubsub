@@ -22,7 +22,7 @@ In my scenario, I have: 2 publishers, 2 subscribers and 1 broker.
 1. Clone the repository:
 
 ```bash
-git clone
+git clone https://github.com/anilsenay/go-custom-pubsub.git
 ```
 
 2. Run the broker:
