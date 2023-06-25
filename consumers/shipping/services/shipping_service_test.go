@@ -6,10 +6,10 @@ import (
 	"net/http/httptest"
 	"testing"
 
-	"github.com/anilsenay/go-basic-pubsub/consumer/models"
+	"github.com/anilsenay/go-basic-pubsub/consumers/shipping/models"
 )
 
-func TestNotificationService_Consume(t *testing.T) {
+func TestShippingService_Consume(t *testing.T) {
 	server := httptest.NewServer(http.HandlerFunc(func(w http.ResponseWriter, r *http.Request) {
 		order := models.Order{
 			OrderID:    123,
@@ -26,7 +26,7 @@ func TestNotificationService_Consume(t *testing.T) {
 
 	c.Subscribe()
 
-	s := &NotificationService{
+	s := &ShippingService{
 		client: c,
 	}
 

@@ -1,1 +1,0 @@
-go run ./consumer/main.go -d 3000

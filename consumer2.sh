@@ -1,0 +1,1 @@
+go run ./consumers/shipping/main.go -d 3000

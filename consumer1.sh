@@ -1,0 +1,1 @@
+go run ./consumers/notification/main.go -d 3000

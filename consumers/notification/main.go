@@ -6,7 +6,7 @@ import (
 	"math/rand"
 	"time"
 
-	"github.com/anilsenay/go-basic-pubsub/consumer/services"
+	"github.com/anilsenay/go-basic-pubsub/consumers/notification/services"
 )
 
 var pubsub_url = flag.String("h", "http://localhost:8080", "URL to consume messages from")

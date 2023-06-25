@@ -55,7 +55,7 @@ func (m *PubSubManager) Dequeue(topic, subscriber string) (string, error) {
 		return "", fmt.Errorf("subscriber %s does not exist", subscriber)
 	}
 	msg := <-m.topics[topic][subscriber]
-	fmt.Printf("%s message: %s\n", yellow("DEQUEUED"), msg)
+	fmt.Printf("%s from %s/%s -> message: %s\n", yellow("DEQUEUED"), topic, subscriber, msg)
 	return msg, nil
 }
 
