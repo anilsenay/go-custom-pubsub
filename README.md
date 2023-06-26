@@ -14,7 +14,7 @@ In my scenario, I have: 2 publishers, 2 subscribers and 1 broker.
 
 - Order Service **(producer)**: It publishes messages to the "order" topic when a new order is created.
 - Shipping Service **(producer)**: It publishes messages to the "shipment" topic when status of shipment is updated.
-- Shipping Service **(consumer)**: It subscribes to the "order" topic and receives messages from the "order" topic.
+- Shipping Service **(consumer)**: It subscribes to the "shipment" topic and receives messages from the "shipment" topic.
 - Notification Service **(consumer)**: It subscribes to both "order" and "shipment" topic and receives messages from these topics.
 
 ## How to run?
